@@ -7,34 +7,37 @@
 
 import SwiftUI
 
-struct ContentView: View {
-    
+
+import Foundation
+import SwiftUI
+
+struct ApplicationView: View {
     @StateObject private var routerManager = NavigationRouter()
 
     var body: some View {
-            TabView {
-                NavigationView {
-                    HomeScreen()
-                        .environmentObject(routerManager)
-                }
-                .tabItem {
-                    Label("Home", systemImage: "house")
-                }
-
-                NavigationView {
-                    StatsView()
-                        .environmentObject(routerManager)
-                }
-                .tabItem {
-                    Label("Stats", systemImage: "gearshape")
-                }
-            }.navigationViewStyle(StackNavigationViewStyle()) // Use this to make sure the NavigationView style is set to StackNavigationViewStyle
-
-        }
-
+        TabView {
+            NavigationView {
+                HomeScreen()
+                    .environmentObject(routerManager)
+            }
+            .tabItem {
+                Label("Home", systemImage: "house")
+            }
+            
+            NavigationView {
+                StatsView()
+                    .environmentObject(routerManager)
+            }
+            .tabItem {
+                Label("Stats", systemImage: "gearshape")
+            }
+        }.navigationViewStyle(StackNavigationViewStyle())
     }
 }
 
-#Preview {
-    ContentView()
+
+struct Application_Preview: PreviewProvider {
+    static var previews: some View {
+        ApplicationView()
+    }
 }

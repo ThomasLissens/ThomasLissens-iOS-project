@@ -8,55 +8,6 @@
 import Foundation
 import Combine
 
-/*class LevelSelectionViewModel: ObservableObject, Identifiable {
-    var results: [LevelObject] = []
-    
-    var onLevelsReceived: (() -> Void)?
-    
-    var onError: ((String) -> Void)?
-    
-    func fetchLevels() {
-        API.Client.shared.get(.search) { (result: Result<API.Types.Response.LevelObjects, API.Types.Error>) in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let succes):
-                    self.parseResults(succes)
-                case .failure(let failure):
-                    self.onError?(failure.localizedDescription)
-                }
-            }
-        }
-    }
-    
-    private func parseResults(_ results: API.Types.Response.LevelObjects) {
-        var localResults = [LevelObject]()
-        
-        for result in results.result {
-            let localResult = LevelObject(
-                levelName: result.levelName,
-                categoryName: result.categoryName,
-                wordsList: result.wordsList
-            )
-            localResults.append(localResult)
-        }
-        
-        self.results = localResults
-        onLevelsReceived?()
-    }
-
-}
-
-extension LevelSelectionViewModel {
-    struct LevelObject {
-        var levelName: String
-        var categoryName: String
-        var wordsList: Array<String>
-    }
-}*/
-
-protocol LevelSelectionViewModelnterface {
-    
-}
 
 class LevelSelectionViewModel: ObservableObject {
     @Published private var levels = LevelObjects() {
@@ -69,9 +20,8 @@ class LevelSelectionViewModel: ObservableObject {
             }
         }
     }
-    
     @Published var hasError = false
-    @Published var error: LevelObjectsError?
+    @Published var error: APIError?
     @Published private(set) var isRefreshing = false
                 
     private var bag = Set<AnyCancellable>()
@@ -88,7 +38,6 @@ class LevelSelectionViewModel: ObservableObject {
          
     private func autosave() {
         save(to: autosaveURL)
-        print("autosaved to \(autosaveURL)")
     }
     
     private func save(to url: URL) {
@@ -96,7 +45,7 @@ class LevelSelectionViewModel: ObservableObject {
             let data = try levels.json()
             try data.write(to: url)
         } catch let error {
-            print("LevelObjects: error while saving \(error.localizedDescription)")
+            print("Level Objects: error while saving \(error.localizedDescription)")
         }
     }
        
@@ -115,11 +64,11 @@ class LevelSelectionViewModel: ObservableObject {
                 let (data, response) = try await URLSession.shared.data(from: url)
                 guard let httpResponse = response as? HTTPURLResponse,
                       (200..<300).contains(httpResponse.statusCode) else {
-                    throw LevelObjectsError.invalidStatusCode
+                    throw APIError.invalidStatusCode
                 }
 
                 let responseDataString = String(data: data, encoding: .utf8)
-                print("Response Data: \(responseDataString ?? "Unable to convert data to string")")
+                //print("Response Data: \(responseDataString ?? "Unable to convert data to string")")
 
                 let decoder = JSONDecoder()
                 let levels = try decoder.decode(LevelObjects.self, from: data)
@@ -131,7 +80,7 @@ class LevelSelectionViewModel: ObservableObject {
             } catch {
                 await MainActor.run {
                     hasError = true
-                    self.error = LevelObjectsError.custom(error: error)
+                    self.error = APIError.custom(error: error)
                 }
             }
 
@@ -139,22 +88,4 @@ class LevelSelectionViewModel: ObservableObject {
         }
     }
 }
-    
-extension LevelSelectionViewModel {
-    enum LevelObjectsError: LocalizedError {
-        case custom(error: Error)
-        case failedToDecode
-        case invalidStatusCode
-        
-        var errorDescription: String? {
-            switch self {
-                case .failedToDecode:
-                    return "Failed to decode response object"
-                case .custom(let error):
-                    return error.localizedDescription
-                case .invalidStatusCode:
-                    return "Response code is invalid"
-            }
-        }
-    }
-}
+

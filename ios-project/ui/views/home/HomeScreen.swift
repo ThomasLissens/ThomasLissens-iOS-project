@@ -9,21 +9,27 @@ import Foundation
 import SwiftUI
 
 struct HomeScreen: View {
-    @State private var path: [String] = []
+    @EnvironmentObject private var routeManager: NavigationRouter
+    @StateObject var game = LevelSelectionViewModel()
     
     var body: some View {
-            NavigationStack(path: $path) {
-                Button("Level selection") {
-                    path.append("Level selection")
-                }
-            }
-            .navigationTitle("Home")
-            .navigationDestination(for: String.self) { value in
-                if value == "Level selection" {
-                    LevelSelectionView()
-                }
+        VStack {
+            NavigationStack(path: $routeManager.routes) {
+            
+                Title(title: "Guessery")
+            
+                NavigationLink(value: Route.levelSelect(viewmodel: game)) {
+                    Text("Play")
+                }.navigationDestination(for: Route.self) { $0 }
             }
         }
+    }
+
 }
 
+struct HomeScreen_Previews: PreviewProvider {
+    static var previews: some View {
+        HomeScreen(game: LevelSelectionViewModel())
+    }
+}
 

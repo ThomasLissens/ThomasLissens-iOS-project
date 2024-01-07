@@ -6,3 +6,8 @@
 //
 
 import Foundation
+import SwiftUI
+
+struct LevelSelect: Identifiable, Hashable {
+    var id = UUID()
+}

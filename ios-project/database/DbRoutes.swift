@@ -10,4 +10,5 @@ import Foundation
 class DbRoutes {
     // place to store levels in the system
     static let autosaveLevelObjects = "Autosaved.levels"
+    static let userDefaultsKey = "Stats" 
 }

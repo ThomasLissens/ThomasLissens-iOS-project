@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct NaviagtionBar: View {
+struct NavigationBar: View {
     @StateObject private var routerManager = NavigationRouter()
 
     var body: some View {
@@ -20,7 +20,7 @@ struct NaviagtionBar: View {
                         Label("Home", systemImage: "house")
                     }
                 
-                SettingsView()
+                StatsView()
                     .tabItem {
                         Label("Stats", systemImage: "gearshape")
                     }
@@ -29,24 +29,9 @@ struct NaviagtionBar: View {
     }
 }
 
-struct HomeView: View {
-    var body: some View {
-        HStack {
-            Text("Yow")
-        }
-    }
-}
-
-struct SettingsView: View {
-    var body: some View {
-        HStack {
-            Text("Settings")
-        }
-    }
-}
 
 struct NaviagtionBar_Preview: PreviewProvider {
     static var previews: some View {
-        NaviagtionBar()
+        NavigationBar()
     }
 }
