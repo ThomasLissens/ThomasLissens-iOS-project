@@ -12,8 +12,24 @@ struct ContentView: View {
     @StateObject private var routerManager = NavigationRouter()
 
     var body: some View {
-        NavigationStack(path: $routerManager.routes) {
-            NavigationBar()
+            TabView {
+                NavigationView {
+                    HomeScreen()
+                        .environmentObject(routerManager)
+                }
+                .tabItem {
+                    Label("Home", systemImage: "house")
+                }
+
+                NavigationView {
+                    StatsView()
+                        .environmentObject(routerManager)
+                }
+                .tabItem {
+                    Label("Stats", systemImage: "gearshape")
+                }
+            }.navigationViewStyle(StackNavigationViewStyle()) // Use this to make sure the NavigationView style is set to StackNavigationViewStyle
+
         }
 
     }
