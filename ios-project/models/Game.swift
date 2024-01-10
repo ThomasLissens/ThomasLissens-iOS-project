@@ -20,6 +20,7 @@ class Game {
         self.level = level
         self.wordsList = wordsList.map { Word(word: $0) }
         addRandomLetters()
+        addRandomLetters()
 
     }
     
@@ -27,6 +28,7 @@ class Game {
         self.category = category
         self.level = level
         self.wordsList = wordsList
+        addRandomLetters()
         addRandomLetters()
 
     }
@@ -36,6 +38,8 @@ class Game {
         self.level = levelObject.level
         self.wordsList = levelObject.listWords.map { Word(word: $0) }
         addRandomLetters()
+        addRandomLetters()
+
     }
     
     func changeLetter(indexWord: Int, indexLetter: Int, letter: String) {

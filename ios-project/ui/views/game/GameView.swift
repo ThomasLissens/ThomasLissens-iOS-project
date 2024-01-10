@@ -22,40 +22,42 @@ struct GameView: View {
             Color(hex: 0x6650a4)
                 .ignoresSafeArea()
                 .overlay {
-                    VStack {
-                        Title(title: gameViewModel.game.category)
+                    ScrollView {
+                        VStack {
+                            Title(title: gameViewModel.game.category)
 
-                        ForEach(0..<gameViewModel.game.wordsList.count, id: \.self) { wordIndex in
-                                
-                                HStack() {
-                                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 30, maximum: 100), spacing: 5)], spacing: 5) {
-                                        ForEach(0..<gameViewModel.game.wordsList[wordIndex].letters.count, id: \.self) { letterIndex in
-                                            if gameViewModel.shouldNotShowTextField(indexWord: wordIndex, indexLetter: letterIndex) {
-                                                Color.clear
-                                            } else {
-                                                TextField("", text: $gameViewModel.game.wordsList[wordIndex].letters[letterIndex].max(1))
-                                                    .onChange(of: gameViewModel.game.wordsList[wordIndex].letters[letterIndex], initial: true) {
-                                                        gameViewModel.checkWord(wordIndex: wordIndex)
-                                                    }
-                                                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                                                    .frame(width: 30, height: 30)
-                                                    .multilineTextAlignment(.center)
-                                                    .padding(5)
+                            ForEach(0..<gameViewModel.game.wordsList.count, id: \.self) { wordIndex in
+                                    
+                                    HStack() {
+                                        LazyVGrid(columns: [GridItem(.adaptive(minimum: 30, maximum: 100), spacing: 5)], spacing: 5) {
+                                            ForEach(0..<gameViewModel.game.wordsList[wordIndex].letters.count, id: \.self) { letterIndex in
+                                                if gameViewModel.shouldNotShowTextField(indexWord: wordIndex, indexLetter: letterIndex) {
+                                                    Color.clear
+                                                } else {
+                                                    TextField("", text: $gameViewModel.game.wordsList[wordIndex].letters[letterIndex].max(1))
+                                                        .onChange(of: gameViewModel.game.wordsList[wordIndex].letters[letterIndex], initial: true) {
+                                                            gameViewModel.checkWord(wordIndex: wordIndex)
+                                                        }
+                                                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                                                        .frame(width: 30, height: 30)
+                                                        .multilineTextAlignment(.center)
+                                                        .padding(5)
+                                                }
                                             }
                                         }
+                                        .padding(5)
                                     }
-                                    .padding(5)
-                                }
-                                .background(correctWord(wordIndex: wordIndex))
-                                .disabled(gameViewModel.game.wordsList[wordIndex].correct)
+                                    .background(correctWord(wordIndex: wordIndex))
+                                    .disabled(gameViewModel.game.wordsList[wordIndex].correct)
 
+                            }
+                            .padding(.vertical, 5)
+                            
+                            gameComplete()
+            
                         }
-                        .padding(.vertical, 5)
-                        
-                        gameComplete()
-        
+                        .padding()
                     }
-                    .padding()
                 }
         }
         .toolbar(.hidden, for: .navigationBar)

@@ -55,7 +55,7 @@ class LevelSelectionViewModel: ObservableObject {
     
     @MainActor
     private func fetchLevels() async {
-        let apiConnectionString = "http://localhost:3000/api/words/levels"
+        let apiConnectionString = "https://guessery-api.cyclic.app/api/words/levels"
         if let url = URL(string: apiConnectionString) {
             isRefreshing = true
             hasError = false
