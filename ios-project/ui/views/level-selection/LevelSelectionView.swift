@@ -13,10 +13,9 @@ struct LevelSelectionView: View {
     @ObservedObject var viewModel: LevelSelectionViewModel
     
     var body: some View {
-        NavigationView {
 
         VStack {
-
+                
                 if viewModel.hasError && viewModel.levelList.isEmpty {
                     Text("Error: \(viewModel.error?.errorDescription ?? "Unknown error")")
                 } else if !viewModel.levelList.isEmpty {
@@ -31,7 +30,7 @@ struct LevelSelectionView: View {
                 }
 
             }.toolbar(.hidden, for: .tabBar)
-        }
+        
     
     }
 }

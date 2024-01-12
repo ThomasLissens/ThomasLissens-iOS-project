@@ -33,6 +33,8 @@ class LevelSelectionViewModel: ObservableObject {
         if let data = try? Data(contentsOf: autosaveURL),
            let autoSavedLevels = try? LevelObjects(json: data) {
             levels = autoSavedLevels
+        } else {
+            levels = LevelObjects()
         }
     }
          
@@ -68,7 +70,7 @@ class LevelSelectionViewModel: ObservableObject {
                 }
 
                 let responseDataString = String(data: data, encoding: .utf8)
-                //print("Response Data: \(responseDataString ?? "Unable to convert data to string")")
+                print("Response Data: \(responseDataString ?? "Unable to convert data to string")")
 
                 let decoder = JSONDecoder()
                 let levels = try decoder.decode(LevelObjects.self, from: data)

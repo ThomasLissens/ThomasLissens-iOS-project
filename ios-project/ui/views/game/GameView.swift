@@ -18,7 +18,6 @@ struct GameView: View {
     }
     
     var body: some View {
-        NavigationView {
             Color(hex: 0x6650a4)
                 .ignoresSafeArea()
                 .overlay {
@@ -59,7 +58,7 @@ struct GameView: View {
                         .padding()
                     }
                 }
-        }
+        
         .toolbar(.hidden, for: .navigationBar)
     }
 
